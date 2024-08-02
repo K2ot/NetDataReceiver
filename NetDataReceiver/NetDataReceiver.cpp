@@ -6,6 +6,10 @@
 
 #include "Response.h"
 
+//TODO: określić nagłówki ramki dla zdjęcia i wiadomości
+
+
+
 std::mutex mutex;
 std::condition_variable conditionVariable;
 bool stopFlag = false; // Flaga używana do zatrzymania pętli

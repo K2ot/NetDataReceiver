@@ -4,17 +4,19 @@
 #include <thread>
 #include <mutex>
 #include <memory>
+#include <iomanip>
+#include <fstream>
 
 #include "DataHandler.h"
 
 
-using boost::asio::ip::tcp;
+//using boost::asio::ip::tcp;
 
 class TCPServer
 {
 	boost::asio::io_service ioService;
-	tcp::acceptor acceptor;
-	tcp::socket socket;
+	boost::asio::ip::tcp::acceptor acceptor;
+	boost::asio::ip::tcp::socket socket;
 	std::thread serviceThread;
 	std::mutex mutex;
 	std::string myIP;
@@ -35,5 +37,6 @@ public:
 	void SendImage(const std::string& filePath);
 
 	bool stopFlag; 
+
 };
 

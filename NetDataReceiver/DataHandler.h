@@ -1,4 +1,6 @@
 #pragma once
+#include <vector>
+#include <queue>
 
 enum class CodeTcp
 {
@@ -18,7 +20,7 @@ namespace Handler
 		virtual ~Handler() = default;
 		virtual void Handle(std::vector<unsigned char> frame) = 0;
 		virtual void Reset() = 0;
-		virtual bool GetResult() { return result; };
+		virtual bool Result() { return result; };
 		virtual std::vector<unsigned char> GetResponse() { return response; };
 		uint8_t resCode;
 	};
@@ -32,7 +34,7 @@ namespace Handler
 		Message() : Handler(static_cast<uint8_t>(CodeTcp::Message)) {}
 		void Handle(std::vector<unsigned char> frame) override;
 		void Reset() override;
-		bool GetResult() override;
+		bool Result() override;
 		std::vector<unsigned char> GetResponse() override;
 	};
 
@@ -45,7 +47,7 @@ namespace Handler
 		Image() : Handler(static_cast<uint8_t>(CodeTcp::Image)) {}
 		void Handle(std::vector<unsigned char> frame) override;
 		void Reset() override;
-		bool GetResult() override;
+		bool Result() override;
 		std::vector<unsigned char> GetResponse() override;
 	};
 
@@ -54,19 +56,24 @@ namespace Handler
 
 class DataManager
 {
-	std::mutex _mutex;
+	std::mutex mutex;
+	std::condition_variable conditionVariable;
 
 	void AddHandler(std::vector<std::reference_wrapper<Handler::Handler>>& handlers, Handler::Handler& hand);
 
 	// Kontener na referencje do handlerow
 	// dodac nastepne kontenery jak bedzie kreslone wiecej opcji
-	std::vector<std::reference_wrapper<Handler::Handler>> _handlersTCP; 
+	std::vector<std::reference_wrapper<Handler::Handler>> handlers;
 
+	bool inComeData{ false };
+	bool stopFlag{ false };
+	std::thread popQueueThread;
+	std::queue<unsigned char> dataQueue;
 
-	const short _SAMPLE{ 20 }; 
+	const short _SAMPLE{ 20 };
 	const short _DELAY{ 200 };
 	DataManager();
-
+	bool stopFlag;
 
 
 public:
@@ -82,3 +89,9 @@ public:
 
 	//przekazanie danych do handlera (TCP)
 	void PushReceivedDataToTCPHandler(const std::vector<unsigned char>& frame);
+
+	void popFromQueue();
+
+	Handler::Image image;
+	Handler::Message message;
+};

@@ -30,6 +30,9 @@
     <ClCompile Include="TCPServer.cpp">
       <Filter>Pliki nagłówkowe\TCPServer</Filter>
     </ClCompile>
+    <ClCompile Include="DataHandler.cpp">
+      <Filter>Pliki nagłówkowe\DataHandler</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Response.h">
