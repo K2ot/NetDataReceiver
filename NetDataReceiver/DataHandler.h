@@ -81,7 +81,7 @@ class DataManager
 
 	bool IsCheckSumValid(const std::vector<unsigned char>& frame);
 	int GetSize(const std::vector<unsigned char>& frame);
-	std::vector<unsigned char> GetData(std::vector<unsigned char>& frame);
+	std::vector<unsigned char> GetData(const std::vector<unsigned char>& frame);
 
 	bool incomingData{ false };
 	bool stopFlag{ false };

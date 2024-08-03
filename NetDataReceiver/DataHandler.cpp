@@ -174,7 +174,7 @@ int DataManager::GetSize(const std::vector<unsigned char>& frame)
 	return result;
 }
 
-std::vector<unsigned char> DataManager::GetData(std::vector<unsigned char>& frame)
+std::vector<unsigned char> DataManager::GetData(const std::vector<unsigned char>& frame)
 {
 	std::vector<unsigned char> vector { frame.begin() + static_cast<uint8_t>(FrameLayout::Information)
 		,frame.end() - static_cast<uint8_t>(FrameLayout::checkSume) };
